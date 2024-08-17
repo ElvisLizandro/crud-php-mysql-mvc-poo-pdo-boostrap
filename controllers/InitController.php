@@ -65,15 +65,37 @@ class InitController
         $url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : '/read';
         $url = explode('/', $url);
 
-        print_r($url);
+        // Filtrar elementos vacíos (eliminar)
+        $url = array_filter($url, 'strlen');
+        //  Controlador por defecto
+        $controllerName = 'UserController';
+        $methodName = isset($url[0]) ? $url[0] : 'read';
 
+        // Verificar si el controlador y el método existen
+        if(file_exists('controllers/' . $controllerName . '.php')){
+            $controller = new $controllerName();
 
+            if(method_exists($controller,$methodName)){
+                unset($url[0]);
+                $params = $url ? array_values($url) : [];
+                call_user_func_array([$controller, $methodName], $params);
+            }else{
+                // Error 404 metodo no encontrado
+                RenderController::render('error',[
+                    'title' => 'Erorr 404 - Pagina no encontrada',
+                    'type' => '404',
+                    'text' => 'Lo sentimos, la página que estás buscando no se pudo encontrar.',
+                    'btnText' => 'Volver a la página de inicio'
+                ]);
+            }
+        } else {
+            // Controlador no encontrado
+            RenderController::render('error',[
+                'title' => 'Error 404 - Página no encontrada',
+                'type' => '404',
+                'text' => 'Lo sentimos, la página que estás buscando no se pudo encontrar.',
+                'btnText' => 'Volver a la página de inicio'
+            ]);
+        }
     }
-
-
-
-
-
-
-
 }
