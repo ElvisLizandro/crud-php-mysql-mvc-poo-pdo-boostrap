@@ -36,25 +36,17 @@ class InitController
     //metodo para cargar todos los archivos automaticamente
     private function init_autoload()
     {
+        
         spl_autoload_register(function ($className){
-
-
+            
             $modelFilePath = 'models/' . $className . '.php';
-
             $controllerfilePath = 'controllers/' . $className . '.php';
-
             if (file_exists($modelFilePath)){
-
                 require_once $modelFilePath;
-
             } elseif (file_exists($controllerfilePath)){
-
                 require_once $controllerfilePath;
-
             } else {
-
                 throw new Exception("Clase '$className' no encontrada");
-                
             }
         });
     }
@@ -63,12 +55,16 @@ class InitController
     {
         // Obtener la ruta de solicitud
         $url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : '/read';
+        
         $url = explode('/', $url);
+        print_r($url);
+        echo "<br>";
 
         // Filtrar elementos vacíos (eliminar)
         $url = array_filter($url, 'strlen');
+        print_r($url);
         //  Controlador por defecto
-        $controllerName = 'UserController';
+        $controllerName = 'UsersController';
         $methodName = isset($url[0]) ? $url[0] : 'read';
 
         // Verificar si el controlador y el método existen
