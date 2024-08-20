@@ -12,8 +12,25 @@ class UsersController extends RenderController
         }
         
         RenderController::render('home', [
-            'usuarios' => 'okey'
+            'usuarios' => $usuarios
         ]);
-         
+    }
+
+    public function create()
+    {
+        $data = [];
+        if (isset($_POST['nombre'])) {
+            $usuario = new UserModel();
+            $respuesta = $usuario->createUser($_POST);
+            if ($respuesta) {
+                $data['respuesta'] = 'ok';
+            }else{
+                $data['respuesta'] = 'error';
+            }
+
+            echo json_encode($data);
+        } else {
+            header('location: ./');
+        }
     }
 }

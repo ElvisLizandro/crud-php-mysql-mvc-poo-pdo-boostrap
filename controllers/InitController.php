@@ -57,12 +57,12 @@ class InitController
         $url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : '/read';
         
         $url = explode('/', $url);
-        print_r($url);
-        echo "<br>";
+        // print_r($url);
+        // echo "<br>";
 
         // Filtrar elementos vacíos (eliminar)
         $url = array_filter($url, 'strlen');
-        print_r($url);
+        // print_r($url);
         //  Controlador por defecto
         $controllerName = 'UsersController';
         $methodName = isset($url[0]) ? $url[0] : 'read';
